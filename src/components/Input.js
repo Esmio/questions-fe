@@ -1,13 +1,17 @@
 import React from 'react';
 import Question from './Question';
 
-function Input({ required, number, title, onChange, hint, textarea }) {
+function Input({ required, number, title, onChange, show, hint, textarea, valueObj, verify }) {
+    if(!show) return '';
+    const isEmpty = !valueObj || !valueObj.value
+    let hintText = hint || '答案不能为空';
     return (
         <Question
             required={required}
             number={number}
             title={title}
-            hint={hint}
+            hint={hintText}
+            showHint={isEmpty && verify}
         >
             {
                 textarea ? 

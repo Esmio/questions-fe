@@ -1,7 +1,10 @@
 import React from 'react';
 import Radio from './Radio';
+import Question from './Question';
 
-function Choice({title, required, number, answers, onChange, otherValue, handleOtherValueChange, valueObj}) {
+function Choice({title, required, number, answers, onChange, otherValue, handleOtherValueChange, valueObj, hint, verify}) {
+    let hintText = hint || '答案不能为空';
+    const isEmpty = !valueObj || !valueObj.value;
     const _renderOptions = () => answers.map((item, index) => (
       <Radio
         key={index}
@@ -14,50 +17,15 @@ function Choice({title, required, number, answers, onChange, otherValue, handleO
       />
     ))
     return (
-      <div
-        style={{
-          width: 'calc(100vw - .6rem)',
-          padding: '.3rem 0',
-          borderBottom: '.01rem solid #f2f2f2',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            fontWeight: 'border',
-            lineHeight: '.36rem',
-          }}
+        <Question
+            title={title}
+            required={required}
+            number={number}
+            hint={hintText}
+            showHint={isEmpty && verify}
         >
-          <span
-            style={{
-              width: '.2rem',
-              textAlign: 'center',
-              color: 'red',
-            }}
-          >
-            { required ? '*' : '' }
-          </span>
-          <span
-            style={{
-              width: '.4rem',
-            }}
-          >
-            { !!number ? `${number}.` : '' }
-          </span>
-          <span>
-            {title}
-          </span>
-        </div>
-        <div
-          style={{
-            paddingLeft: '.6rem',
-            paddingTop: '.2rem',
-          }}
-        >
-          {_renderOptions()}
-        </div>
-      </div>
+            {_renderOptions()}
+        </Question>
     )
 }
 

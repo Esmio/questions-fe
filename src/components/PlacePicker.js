@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Question from './Question';
 
-function PlacePicker({ title, number, onChange, required, hint, places, valueObj }) {
-    
+function PlacePicker({ title, number, onChange, required, hint, places, valueObj, verify, }) {
+    let hintText = hint || '答案不能为空';
+    const isEmpty = !valueObj || valueObj.prov === undefined || !valueObj.city === undefined;
     const [prov, setProv] = useState(0);
     const [city, setCity] = useState();
     const [show, setShow] = useState(false);
@@ -62,7 +63,6 @@ function PlacePicker({ title, number, onChange, required, hint, places, valueObj
     }
 
     const handleProvChange = (e) => {
-        console.log('prov-select', e.target.value);
         const value = parseInt(e.target.value);
         setProv(value);
     }
@@ -72,7 +72,8 @@ function PlacePicker({ title, number, onChange, required, hint, places, valueObj
             title={title}
             number={number}
             required={required}
-            hint={hint}
+            hint={hintText}
+            showHint={isEmpty && verify}
         >
             <div
                 style={{

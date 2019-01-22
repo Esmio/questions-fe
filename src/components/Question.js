@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Question({ required, number, title, children, multi, hint }) {
+function Question({ required, number, title, children, multi, hint, showHint }) {
     let titleExtra = '';
     if(typeof multi === 'boolean') titleExtra = '【多选题】';
     if(typeof multi === 'number') titleExtra = `【最多选择${multi}项】`;
@@ -50,11 +50,11 @@ function Question({ required, number, title, children, multi, hint }) {
             <div
                 style={{
                     color: 'red',
-                    fontSize: '.24rem',
+                    fontSize: '.18rem',
                     paddingLeft: '.6rem',
                 }}
             >
-                {required && hint}
+                {required && showHint && hint}
             </div>
             <div
                 style={{

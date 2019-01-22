@@ -21,17 +21,18 @@ const questions = [
         number: 2,
         type: 'selector',
         required: true,
-        title="您的年龄段：",
+        title: "您的年龄段：",
         answers: ages,
     },
     {
         number: 3,
+        required: true,
         type: 'placepicker',
         title: "您所在的城市",
         places: places,
     },
     {
-        nubmer: 4,
+        number: 4,
         type: 'choice',
         required: true,
         title: '是否已经就业',
@@ -51,6 +52,10 @@ const questions = [
         type: 'input',
         required: true,
         title: '那你的职业是什么呢？',
+        follow: {
+            number: 4,
+            value: 1,
+        }
     },
     {
         number: 6,
@@ -349,6 +354,10 @@ const questions = [
         type: 'input',
         required: true,
         title: '如果有过是和几个人呢？',
+        follow: {
+            number: 16,
+            value: 1,
+        }
     },
     {
         number: 18,
@@ -447,6 +456,7 @@ const questions = [
         type: 'choice',
         required: true,
         title: '您是哪里知道唔哩星球的',
+        otherValue: 11,
         answers: [
             {
                 text: '朋友推荐',
@@ -497,8 +507,10 @@ const questions = [
     {
         number: 23,
         type: 'multiselector',
+        required: true,
         multi: 3,
         title: '您使用唔哩星球或其他app的场合通常是',
+        otherValue: 7,
         options: [
             {
                 text: '早餐起床前',
@@ -586,6 +598,295 @@ const questions = [
                 value: 5
             },
         ]
+    },
+    {
+        number: 26,
+        type: 'multiselector',
+        required: true,
+        multi: 3,
+        title: '您在唔哩星球中使用停留时间长的功能是什么',
+        options: [
+            {
+                text: '星际偶遇',
+                value: 1,
+            },
+            {
+                text: '家族',
+                value: 2,
+            },
+            {
+                text: '涂鸦拍卖',
+                value: 3,
+            },
+            {
+                text: '故事和酒',
+                value: 4,
+            },
+            {
+                text: '斯卡布罗集市',
+                value: 5,
+            },
+            {
+                text: '音波星球',
+                value: 6,
+            },
+            {
+                text: '假面舞会',
+                value: 7,
+            },
+            {
+                text: '红包房间',
+                value: 8,
+            },
+        ]
+    },
+    {
+        number: 27,
+        required: true,
+        type: 'multiselector',
+        multi: 3,
+        title: '您和好友互动多的是',
+        options: [
+            {
+                text: '好友打字语音聊天',
+                value: 1,
+            },
+            {
+                text: '家族内群聊天',
+                value: 2,
+            },
+            {
+                text: '故事与酒互动',
+                value: 3,
+            },
+            {
+                text: '涂鸦拍卖玩涂鸦',
+                value: 4,
+            },
+            {
+                text: '参加假面舞会',
+                value: 5,
+            },
+            {
+                text: '斯卡布罗集市发布悬赏或者卖技能',
+                value: 6,
+            },
+            {
+                text: '音波星球连麦',
+                value: 7,
+            },
+            {
+                text: '红包房间收发红包',
+                value: 8,
+            },
+        ] 
+    },
+    {
+        number: 28,
+        type: 'choice',
+        required: true,
+        title: '你会选择加入家族吗？',
+        answers: [
+            {
+                text: '会',
+                value: 1,
+            },
+            {
+                text: '不会',
+                value: 2
+            },
+        ]
+    },
+    {
+        number: 29,
+        type: 'input',
+        required: true,
+        title: '加入家族的理由或者不加入的理由呢？',
+    },
+    {
+        number: 30,
+        type: 'input',
+        required: true,
+        title: '您近三个月下载并且还保留使用的社交软件是什么？',
+    },
+    {
+        number: 31,
+        type: 'multiselector',
+        multi: 3,
+        required: true,
+        title: '您会因为什么选择使用一新的社交应用',
+        options: [
+            {
+                text: '新鲜感',
+                value: 1,
+            },
+            {
+                text: '最近比较热门各大排行榜推荐使用',
+                value: 2,
+            },
+            {
+                text: '新功能比较吸引人',
+                value: 3,
+            },
+            {
+                text: '品牌效应',
+                value: 4,
+            },
+            {
+                text: '界面设计美观吸引了我',
+                value: 5,
+            },
+            {
+                text: '使用起来容易上手，操作体验好',
+                value: 6,
+            },
+            {
+                text: '周围朋友、同学或同事都在使用',
+                value: 7,
+            },
+        ]
+    },
+    {
+        number: 32,
+        type: 'choice',
+        required: true,
+        title: '您认为朋友对你的重要性',
+        answers: [
+            {
+                text: '很重要，没有朋友我会死的',
+                value: 1,
+            },
+            {
+                text: '一般 有朋友但是希望还能遇到更多朋友',
+                value: 2
+            },
+            {
+                text: '无所谓 朋友不用多，有一两个就好',
+                value: 3
+            },
+            {
+                text: '不需要 我一个人也能过得很好',
+                value: 4
+            }, 
+        ]
+    },
+    {
+        number: 33,
+        type: 'choice',
+        required: true,
+        title: '你网上交友会优先考虑什么？',
+        otherValue: 8,
+        answers: [
+            {
+                text: '异性优先',
+                value: 1,
+            },
+            {
+                text: '年龄吻合优先',
+                value: 2
+            },
+            {
+                text: '地理位置优先',
+                value: 3
+            },
+            {
+                text: '兴趣爱好优先',
+                value: 4
+            },
+            {
+                text: '颜值优先',
+                value: 5
+            },
+            {
+                text: '声音好听优先',
+                value: 6
+            },
+            {
+                text: '性格优先',
+                value: 7
+            },
+            {
+                text: '其他',
+                value: 8
+            },
+        ]
+    },
+    {
+        number: 34,
+        type: 'choice',
+        required: true,
+        title: '你会因为什么而跟别人交朋友',
+        answers: [
+            {
+                text: 'TA的性格',
+                value: 1,
+            },
+            {
+                text: 'TA的外貌',
+                value: 2
+            },
+            {
+                text: 'TA的声音',
+                value: 3
+            },
+            {
+                text: 'TA的特长',
+                value: 4
+            },
+            {
+                text: 'TA的谈吐',
+                value: 5
+            },
+            {
+                text: 'TA的教育背景',
+                value: 6
+            },
+            {
+                text: 'TA的财富',
+                value: 7
+            },
+            {
+                text: 'TA的兴趣爱好',
+                value: 8
+            },
+        ]
+    },
+    {
+        number: 35,
+        type: 'input',
+        required: true,
+        title: '那您会怎么给别人推荐唔哩星球呢？',
+        textarea: true,
+    },
+    {
+        number: 36,
+        type: 'choice',
+        required: true,
+        title: '您觉得唔哩星球对你来说是款重要的APP吗？',
+        answers: [
+            {
+                text: '是的 很重要的一款APP，不会卸载',
+                value: 1,
+            },
+            {
+                text: '还不是，但有望成为我重要的一款APP，还没卸载',
+                value: 2
+            },
+            {
+                text: '不是，最多想起来才打开看看 可卸可不卸',
+                value: 3
+            },
+            {
+                text: '不是 已经卸载',
+                value: 4
+            },
+        ]
+    },
+    {
+        number: 37,
+        type: 'input',
+        required: true,
+        title: '留下你的唔哩ID&nbsp;&nbsp;让我们面基探讨吧！'
     }
 ]
 

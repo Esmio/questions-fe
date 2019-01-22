@@ -11,17 +11,22 @@ function MultiSelector({
         options, 
         otherValue, 
         handleOtherValueChange, 
-        valueObj
+        valueObj,
+        hint,
+        verify,
     }) {
+    options = options || [];
+    const isEmpty = !valueObj || !valueObj.value || valueObj.value.length === 0;
+    let hintText = hint || '答案不能为空';
     const _renderOptions = () => options.map((item, index) => (
         <Option
-          key={index}
-          selected={!!valueObj && valueObj.value && valueObj.value.indexOf(item.value) > -1}
-          text={item.text}
-          value={item.value}
-          onChange={onChange(number, multi)}
-          isOther={!!otherValue && otherValue === item.value}
-          handleOtherValueChange={!!handleOtherValueChange ? handleOtherValueChange(number) : null}
+            key={index}
+            selected={!!valueObj && valueObj.value && valueObj.value.indexOf(item.value) > -1}
+            text={item.text}
+            value={item.value}
+            onChange={onChange(number, multi)}
+            isOther={!!otherValue && otherValue === item.value}
+            handleOtherValueChange={!!handleOtherValueChange ? handleOtherValueChange(number) : null}
         />
     ))
     return (
@@ -30,6 +35,8 @@ function MultiSelector({
             number={number}
             title={title}
             multi={multi}
+            hint={hintText}
+            showHint={isEmpty && verify}
         >
             {_renderOptions()}
         </Question>
