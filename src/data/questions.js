@@ -61,7 +61,7 @@ const questions = [
         number: 6,
         type: 'choice',
         required: true,
-        title: '是否已经就业',
+        title: '您的学历是',
         answers: [
             {
                 text: '小学毕业及以下',

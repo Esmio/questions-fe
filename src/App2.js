@@ -1,9 +1,11 @@
 import React from 'react';
 import axios from 'axios';
 import queryString from 'query-string';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 
-import questions from './data/questions';
+// import questions from './data/questions';
+import { host } from './config';
+import { convertData } from './utils';
 
 import Selector from './components/Selector';
 import Choice from './components/Choice';
@@ -11,14 +13,34 @@ import PlacePicker from './components/PlacePicker';
 import Input from './components/Input';
 import MultiSelector from './components/MultiSelector';
 
+
 function App() {
   const [ items, setItems ] = useState({});
   const [ verify, setVerify ] = useState(false);
+  const [ questions, setQuestions ] = useState([]);
+  const [ loading, setLoading ] = useState(false);
+
+  useEffect(() => {
+    axios({
+      method: 'get',
+      url: `${host}/api/question/topic/list?issue_id=5c4d7945fc28bea4987603dd`,
+    }).then(r => {
+      const { code, data } = r.data;
+      if(code === 0) {
+        setQuestions(convertData(data.list));
+        console.log('data~~~~~', convertData(data.list));
+      }
+    }).catch(e => {
+      console.log('获取问卷出错', e);
+    })
+  }, [])
+
   // 单选题
   const handleChoiceChange = (number) => (value) => (e) => {
+    
     items[number] = items[number] || {};
     items[number]['value'] = value;
-    const { follow } = questions[number]; // questions is an array, so number no need to plus 1.
+    const follow = questions[number] && questions[number].follow ; // questions is an array, so number no need to plus 1.
     if(!!follow && follow.value !== value ) delete items[number + 1];
     setItems({
       ...items,
@@ -107,16 +129,20 @@ function App() {
   // 提交问券
   const submit = () => {
     const canSubmit = verifyItems();
-    // if(!canSubmit) return false;
+    if(!canSubmit) return false;
     const parsed = queryString.parse(window.location.search);
     const {uid} = parsed;
+    console.log('uid', uid);
+    console.log('items', items);
+    const itmesStr = JSON.stringify(items);
     if(!uid) return false;
     axios({
       method: 'post',
       url: 'http://127.0.0.1:28080/api/question/submit',
       data: {
         uid,
-        items,
+        items: itmesStr,
+        issue_id: "5c4d7945fc28bea4987603dd",
       }
     }).then(r => {
       console.log('r', r);
@@ -289,7 +315,7 @@ function App() {
           }}
         >
             {
-                _renderQuestions()
+              _renderQuestions()
             }
         </div>
         <div
@@ -300,23 +326,27 @@ function App() {
             alignItems: 'center',
           }}
         >
-          <div
-            style={{
-              width: '2rem',
-              height: '.6rem',
-              fontSize: '.28rem',
-              fontWeight: 'bolder',
-              color: '#fff',
-              backgroundColor: '#19a8ee',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: '.1rem'
-            }}
-            onClick={submit}
-          >
-            提交问券
-          </div>
+          {
+            !!questions.length > 0 ? 
+            <div
+              style={{
+                width: '2rem',
+                height: '.6rem',
+                fontSize: '.28rem',
+                fontWeight: 'bolder',
+                color: '#fff',
+                backgroundColor: '#19a8ee',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: '.1rem'
+              }}
+              onClick={submit}
+            >
+              提交问券
+            </div> : ''
+          }
+          
         </div>
       </div>
     </div>
