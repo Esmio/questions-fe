@@ -43,7 +43,6 @@ function App() {
   }
   // 下拉选择 
   const handleSelectorChange = (number) => (e) => {
-    console.log('selector-change: ', number, e.target.value);
     items[number] = items[number] || {};
     const value = parseInt(e.target.value);
     if(value === 0) delete items[number];
@@ -69,7 +68,6 @@ function App() {
   }
   // 提交问券
   const submit = () => {
-    console.log('items', items);
   }
   return (
     <div 
