@@ -18,7 +18,10 @@ function App() {
   const [ items, setItems ] = useState({});
   const [ verify, setVerify ] = useState(false);
   const [ questions, setQuestions ] = useState([]);
-  const [ loading, setLoading ] = useState(false);
+  const [ modal, setModal ] = useState({
+    show: false,
+    info: '',
+  })
 
   useEffect(() => {
     axios({
@@ -28,7 +31,6 @@ function App() {
       const { code, data } = r.data;
       if(code === 0) {
         setQuestions(convertData(data.list));
-        console.log('data~~~~~', convertData(data.list));
       }
     }).catch(e => {
       console.log('获取问卷出错', e);
@@ -129,25 +131,51 @@ function App() {
   // 提交问券
   const submit = () => {
     const canSubmit = verifyItems();
-    if(!canSubmit) return false;
+    if(!canSubmit) {
+      setModal({
+        modal: true,
+        info: '您还有未回答的题目哦！'
+      })
+      return false;
+    }
     const parsed = queryString.parse(window.location.search);
     const {uid} = parsed;
-    console.log('uid', uid);
-    console.log('items', items);
     const itmesStr = JSON.stringify(items);
     if(!uid) return false;
     axios({
       method: 'post',
-      url: 'http://127.0.0.1:28080/api/question/submit',
+      url: `${host}/api/question/submit`,
       data: {
         uid,
         items: itmesStr,
         issue_id: "5c4d7945fc28bea4987603dd",
       }
     }).then(r => {
-      console.log('r', r);
+      const { code, data } = r.data;
+      if(code === 0) {
+        setModal({
+          show: true,
+          type: 1,
+          info: '问卷提交成功！'
+        })
+      }
     }).catch(e => {
       console.log('e', e);
+      if(!e.response) setModal({show: false, info: e.message});
+      else {
+        const {data} = e.response;
+        if(data.code === 20002) {
+          setModal({
+            show: true,
+            info: '您已经提交过问卷'
+          })
+        }else {
+          setModal({
+            show: true,
+            info: data.msg,
+          })
+        }
+      }
     })
     
   }
@@ -346,9 +374,50 @@ function App() {
               提交问券
             </div> : ''
           }
-          
         </div>
       </div>
+      { 
+        modal.show ? 
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            height: '100vh',
+            width: '100vw',
+            backgroundColor: 'rgba(0,0,0, .8)',
+            color: '#fff',
+            fontSize: '.32rem',
+            fontWeight: 'bolder',
+            overflow: 'hidden',
+          }}
+          onClick={() => {setModal({show: false, info:''})}}
+        >
+          <span style={{color: modal.type === 1 ? 'green' : 'red'}}>{modal.info}</span>
+          <div
+            style={{
+              width: '1.6rem',
+              height: '.6rem',
+              borderRadius: '.05rem',
+              backgroundColor: '#fff',
+              fontSize: '.28rem',
+              color: '#000',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: '.8rem',
+            }}
+            onClick={() => {setModal({show: false, info:''})}}
+          >
+            关闭
+          </div>
+        </div> :
+        ''
+      }
     </div>
   )
 }

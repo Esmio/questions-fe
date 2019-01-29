@@ -35,7 +35,7 @@ export const convertData = (arr) => {
             if(!!multi) obj.multi = multi;
         }
         if(type === 'input') {
-            console.log('textarea', textarea);
+            if(textarea === 1) obj.textarea = true;
             if(!!follow) obj.follow = follow;
         }
         return obj;
