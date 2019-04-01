@@ -54,7 +54,7 @@ function Question({ required, number, title, children, multi, hint, showHint }) 
                     paddingLeft: '.6rem',
                 }}
             >
-                {required && showHint && hint}
+                {required && showHint ? hint : ''}
             </div>
             <div
                 style={{

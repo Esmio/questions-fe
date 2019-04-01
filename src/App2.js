@@ -24,9 +24,12 @@ function App() {
   })
 
   useEffect(() => {
+    const parsed = queryString.parse(window.location.search);
+    let { issue_id } = parsed;
+    issue_id = issue_id || '5c4d7945fc28bea4987603dd';
     axios({
       method: 'get',
-      url: `${host}/api/question/topic/list?issue_id=5c4d7945fc28bea4987603dd`,
+      url: `${host}/api/question/topic/list?issue_id=${issue_id}`,
     }).then(r => {
       const { code, data } = r.data;
       if(code === 0) {
@@ -98,25 +101,25 @@ function App() {
     setVerify(true)
     let canSubmit = true;
     questions.some((item, index) => {
-      const {type, number} = item;
+      const {type, number, required} = item;
       const valueObj = items[number];
-      if(type === 'choice' && (!valueObj || !valueObj['value'])) {
+      if(required === 1 && type === 'choice' && (!valueObj || !valueObj['value'])) {
         canSubmit = false;
         return true;
       }
-      if(type === 'selector' && (!valueObj || !valueObj['value'])) {
+      if(required === 1 && type === 'selector' && (!valueObj || !valueObj['value'])) {
         canSubmit = false;
         return true;
       }
-      if(type === 'placepicker' && (!valueObj || valueObj['prov'] === undefined || valueObj['city'] === undefined)) {
+      if(required === 1 && type === 'placepicker' && (!valueObj || valueObj['prov'] === undefined || valueObj['city'] === undefined)) {
         canSubmit = false;
         return true;
       }
-      if(type === 'multiselector' && (!valueObj || !valueObj['value'] || valueObj['value'].length === 0)) {
+      if(required === 1 && type === 'multiselector' && (!valueObj || !valueObj['value'] || valueObj['value'].length === 0)) {
         canSubmit = false;
         return true;
       }
-      if(type === 'input') {
+      if(required === 1 && type === 'input') {
         const { follow } = item;
         if(!valueObj || !valueObj['value']){
           if(!follow || items[follow.number]['value'] === follow.value) {
@@ -139,8 +142,9 @@ function App() {
       return false;
     }
     const parsed = queryString.parse(window.location.search);
-    const {uid} = parsed;
+    const {uid, issue_id} = parsed;
     const itmesStr = JSON.stringify(items);
+    const id = issue_id || '5c4d7945fc28bea4987603dd';
     if(!uid) return false;
     axios({
       method: 'post',
@@ -148,7 +152,7 @@ function App() {
       data: {
         uid,
         items: itmesStr,
-        issue_id: "5c4d7945fc28bea4987603dd",
+        issue_id: id,
       }
     }).then(r => {
       const { code, data } = r.data;
@@ -177,7 +181,6 @@ function App() {
         }
       }
     })
-    
   }
 
   const _renderQuestions = () => {
