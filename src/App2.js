@@ -318,7 +318,7 @@ function App() {
           alignItems: 'center',
         }}
       >
-        唔哩星球玩家调研
+        调查问卷
       </div>
       <div
         style={{
